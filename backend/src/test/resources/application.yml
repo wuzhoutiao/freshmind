@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: test
+  datasource:
+    url: jdbc:h2:mem:freshmind-test;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    username: ${TEST_DB_USERNAME:sa}
+    password: ${TEST_DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+  cache:
+    type: simple
+
+freshmind:
+  time-zone: UTC
+  near-expiry-days: 2
+  recommendation:
+    minimum-match-rate: 0.60
+    expiring-ingredient-bonus: 0.20
+  ai:
+    enabled: false
+    base-url: http://localhost/unused
+    api-key: test-only
+    model: demo
+    candidate-count: 8
+    timeout: PT1S
+  session-ttl: PT1H
+

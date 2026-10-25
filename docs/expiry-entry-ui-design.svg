@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="980" viewBox="0 0 860 980">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="28" flood-color="#1f3d13" flood-opacity="0.22"/>
+    </filter>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#345920" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .title { font: 700 25px "Marker Felt", "Comic Sans MS", cursive; fill: #9bd783; }
+      .label { font: 800 14px Inter, Roboto, Arial, sans-serif; fill: #84c96d; }
+      .blueTitle { font: 900 14px Inter, Roboto, Arial, sans-serif; fill: #17356f; }
+      .copy { font: 400 11px Inter, Roboto, Arial, sans-serif; fill: #6c7b64; }
+      .small { font: 800 10px Inter, Roboto, Arial, sans-serif; fill: #17356f; }
+      .input { font: 400 14px Inter, Roboto, Arial, sans-serif; fill: #a7a7a7; }
+      .badge { font: 900 10px Inter, Roboto, Arial, sans-serif; fill: #84c96d; }
+      .result { font: 900 12px Inter, Roboto, Arial, sans-serif; fill: #c75a1b; }
+      .nav { font: 800 10px Inter, Roboto, Arial, sans-serif; fill: #5a7faf; }
+      .navActive { font: 800 10px Inter, Roboto, Arial, sans-serif; fill: #9bd783; }
+    </style>
+  </defs>
+
+  <rect width="860" height="980" fill="#f5f7ef"/>
+
+  <g transform="translate(235 50)" filter="url(#shadow)">
+    <rect width="390" height="844" rx="34" fill="#eefabd" stroke="#d9e8b1"/>
+
+    <text x="24" y="23" font-family="Inter, Roboto, Arial, sans-serif" font-size="11" font-weight="700" fill="#17356f">9:41</text>
+    <text x="320" y="23" text-anchor="end" font-family="Inter, Roboto, Arial, sans-serif" font-size="11" font-weight="700" fill="#17356f">FreshMind</text>
+
+    <circle cx="37" cy="58" r="22" fill="#ffffff" filter="url(#softShadow)"/>
+    <path d="M42 48 L31 58 L42 68" fill="none" stroke="#9bd783" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="195" y="66" text-anchor="middle" class="title">Custom Ingredient Entry</text>
+
+    <g transform="translate(15 100)">
+      <g filter="url(#softShadow)">
+        <rect x="0" y="0" width="78" height="84" rx="8" fill="#fbfff2" stroke="#9bd783" stroke-width="2"/>
+        <circle cx="39" cy="28" r="18" fill="#f5f9ed"/>
+        <path d="M30 31 C25 20 32 13 42 15 C50 18 51 29 43 37 C39 31 34 30 30 31Z" fill="#9bd783"/>
+        <text x="39" y="63" text-anchor="middle" class="small">Vegetables</text>
+      </g>
+      <g transform="translate(94 0)" filter="url(#softShadow)">
+        <rect width="78" height="84" rx="8" fill="#ffffff"/>
+        <circle cx="39" cy="28" r="18" fill="#f5f9ed"/>
+        <circle cx="39" cy="30" r="13" fill="#ff8a65"/>
+        <path d="M40 16 C41 10 46 9 49 11" stroke="#84c96d" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <text x="39" y="63" text-anchor="middle" class="small">Fruits</text>
+      </g>
+      <g transform="translate(188 0)" filter="url(#softShadow)">
+        <rect width="78" height="84" rx="8" fill="#ffffff"/>
+        <circle cx="39" cy="28" r="18" fill="#f5f9ed"/>
+        <path d="M27 37 C30 20 45 15 52 25 C57 34 46 42 33 41Z" fill="#d96c5f"/>
+        <text x="39" y="63" text-anchor="middle" class="small">Meat</text>
+      </g>
+      <g transform="translate(282 0)" filter="url(#softShadow)">
+        <rect width="78" height="84" rx="8" fill="#ffffff"/>
+        <circle cx="39" cy="28" r="18" fill="#f5f9ed"/>
+        <rect x="29" y="17" width="20" height="26" rx="4" fill="#ffd166"/>
+        <rect x="31" y="24" width="16" height="12" rx="2" fill="#ffffff" opacity="0.8"/>
+        <text x="39" y="63" text-anchor="middle" class="small">Others</text>
+      </g>
+    </g>
+
+    <g transform="translate(37 206)">
+      <text x="0" y="0" class="label">Name</text>
+      <rect x="0" y="11" width="316" height="40" rx="5" fill="#ffffff" stroke="#dcefcf"/>
+      <text x="12" y="36" class="input">Tomato</text>
+
+      <text x="0" y="84" class="label">How would you like to enter the expiry?</text>
+
+      <g transform="translate(0 98)" filter="url(#softShadow)">
+        <rect width="316" height="112" rx="8" fill="#ffffff" stroke="#9bd783"/>
+        <circle cx="21" cy="23" r="9" fill="#ffffff" stroke="#9bd783" stroke-width="2"/>
+        <circle cx="21" cy="23" r="4" fill="#9bd783"/>
+        <text x="39" y="28" class="blueTitle">I know the expiry date</text>
+        <rect x="230" y="10" width="74" height="22" rx="5" fill="#edf8e6"/>
+        <text x="267" y="25" text-anchor="middle" class="badge">Recommended</text>
+        <text x="39" y="53" class="copy">Choose this when the package says "Best before" or "Use by".</text>
+        <rect x="39" y="67" width="253" height="32" rx="5" fill="#ffffff" stroke="#dcefcf"/>
+        <text x="51" y="88" class="input">Expiry date: DD/MM/YYYY</text>
+      </g>
+
+      <g transform="translate(0 222)" filter="url(#softShadow)">
+        <rect width="316" height="112" rx="8" fill="#ffffff" fill-opacity="0.78" stroke="#dbe9be"/>
+        <circle cx="21" cy="23" r="9" fill="#ffffff" stroke="#9bd783" stroke-width="2"/>
+        <text x="39" y="28" class="blueTitle">I know the production date and shelf life</text>
+        <text x="39" y="53" class="copy">Choose this when the package shows a made date and "shelf life: 30 days".</text>
+        <rect x="39" y="67" width="153" height="32" rx="5" fill="#ffffff" stroke="#dcefcf"/>
+        <text x="51" y="88" class="input">Made on</text>
+        <rect x="200" y="67" width="92" height="32" rx="5" fill="#ffffff" stroke="#dcefcf"/>
+        <text x="212" y="88" class="input">30 days</text>
+      </g>
+
+      <g transform="translate(0 346)">
+        <rect width="316" height="42" rx="8" fill="#fff7ed" stroke="#f2c9ae"/>
+        <text x="12" y="26" class="result">Final expiry date</text>
+        <text x="304" y="26" text-anchor="end" class="result">01/06/2026</text>
+      </g>
+
+      <g transform="translate(0 398)">
+        <rect width="316" height="44" rx="8" fill="#f8ffe6" stroke="#dceaba"/>
+        <text x="11" y="19" class="copy">Tip: both options save the same final expiry date. Pick the one</text>
+        <text x="11" y="34" class="copy">that matches the wording on the package.</text>
+      </g>
+
+      <rect x="104" y="459" width="108" height="34" rx="6" fill="#9bd783"/>
+      <text x="158" y="482" text-anchor="middle" font-family="Inter, Roboto, Arial, sans-serif" font-size="17" font-weight="900" fill="#ffffff">Save</text>
+    </g>
+
+    <g transform="translate(0 787)">
+      <rect width="390" height="57" fill="#ffffff"/>
+      <line x1="0" y1="0" x2="390" y2="0" stroke="#e7efd5"/>
+      <g transform="translate(65 12)">
+        <path d="M-8 12 L0 4 L8 12 V23 H-5 V15 H5 V23 H-8Z" fill="#5a7faf"/>
+        <text x="0" y="37" text-anchor="middle" class="nav">Home</text>
+      </g>
+      <g transform="translate(195 12)">
+        <rect x="-10" y="5" width="20" height="18" rx="3" fill="none" stroke="#9bd783" stroke-width="3"/>
+        <line x1="-4" y1="5" x2="-4" y2="23" stroke="#9bd783" stroke-width="2"/>
+        <line x1="4" y1="5" x2="4" y2="23" stroke="#9bd783" stroke-width="2"/>
+        <text x="0" y="37" text-anchor="middle" class="navActive">Inventory</text>
+      </g>
+      <g transform="translate(325 12)">
+        <line x1="-9" y1="8" x2="9" y2="8" stroke="#5a7faf" stroke-width="3" stroke-linecap="round"/>
+        <line x1="-9" y1="15" x2="9" y2="15" stroke="#5a7faf" stroke-width="3" stroke-linecap="round"/>
+        <line x1="-9" y1="22" x2="9" y2="22" stroke="#5a7faf" stroke-width="3" stroke-linecap="round"/>
+        <text x="0" y="37" text-anchor="middle" class="nav">Recipes</text>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FreshMind Expiry Entry UI Design</title>
+  <style>
+    :root {
+      --bg: #eefabd;
+      --green: #9bd783;
+      --green-dark: #84c96d;
+      --blue: #17356f;
+      --nav-blue: #5a7faf;
+      --text: #111111;
+      --muted: #6c7b64;
+      --line: #dbe9be;
+      --soft: #f8ffe6;
+      --white: #ffffff;
+      --warning: #c75a1b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #f5f7ef;
+      font-family: Inter, Roboto, Arial, sans-serif;
+      color: var(--text);
+    }
+
+    .phone {
+      width: 390px;
+      height: 844px;
+      overflow: hidden;
+      background: var(--bg);
+      border: 1px solid #d9e8b1;
+      border-radius: 34px;
+      box-shadow: 0 24px 70px rgba(31, 61, 19, 0.22);
+      position: relative;
+    }
+
+    .status {
+      height: 22px;
+      padding: 8px 24px 0;
+      font-size: 11px;
+      color: var(--blue);
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+    }
+
+    .header {
+      height: 58px;
+      display: grid;
+      grid-template-columns: 44px 1fr 44px;
+      align-items: center;
+      padding: 0 15px;
+    }
+
+    .icon-button {
+      width: 44px;
+      height: 44px;
+      border-radius: 22px;
+      border: 0;
+      background: var(--white);
+      color: var(--green);
+      font-size: 24px;
+      line-height: 44px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(52, 89, 32, 0.09);
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--green);
+      font-family: "Marker Felt", "Comic Sans MS", cursive;
+      font-size: 25px;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 0;
+    }
+
+    .content {
+      height: calc(100% - 137px);
+      overflow: hidden;
+      padding: 20px 15px 18px;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      height: 84px;
+    }
+
+    .category {
+      background: var(--white);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(52, 89, 32, 0.1);
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 5px;
+      color: var(--blue);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .category.selected {
+      outline: 2px solid var(--green);
+      background: #fbfff2;
+    }
+
+    .emoji {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      border-radius: 18px;
+      background: #f5f9ed;
+    }
+
+    .form {
+      margin: 22px 4px 0;
+      padding: 20px 18px 0;
+    }
+
+    .field-label {
+      color: var(--green-dark);
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 9px;
+    }
+
+    .input {
+      height: 40px;
+      border-radius: 5px;
+      background: var(--white);
+      border: 0;
+      box-shadow: inset 0 0 0 1px rgba(132, 201, 109, 0.15);
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      color: #a7a7a7;
+      font-size: 14px;
+    }
+
+    .section-title {
+      margin: 18px 0 10px;
+      color: var(--green-dark);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .method-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .method {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 12px 11px;
+      box-shadow: 0 2px 7px rgba(52, 89, 32, 0.07);
+    }
+
+    .method.active {
+      background: var(--white);
+      border-color: var(--green);
+      box-shadow: 0 5px 14px rgba(52, 89, 32, 0.14);
+    }
+
+    .method-head {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 22px;
+    }
+
+    .radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--green);
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .radio::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      opacity: 0;
+    }
+
+    .active .radio::after {
+      opacity: 1;
+    }
+
+    .method-title {
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 900;
+      flex: 1;
+    }
+
+    .badge {
+      border-radius: 5px;
+      background: #edf8e6;
+      color: var(--green-dark);
+      font-size: 10px;
+      font-weight: 900;
+      padding: 4px 6px;
+    }
+
+    .method-copy {
+      margin: 7px 0 0 27px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .subfields {
+      margin: 11px 0 0 27px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .subrow {
+      display: grid;
+      grid-template-columns: 1fr 92px;
+      gap: 8px;
+    }
+
+    .result {
+      margin-top: 12px;
+      padding: 11px 12px;
+      border-radius: 8px;
+      background: #fff7ed;
+      border: 1px solid #f2c9ae;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--warning);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .helper {
+      margin-top: 8px;
+      padding: 9px 11px;
+      border-radius: 8px;
+      background: var(--soft);
+      border: 1px solid #dceaba;
+      color: #6f8060;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .save {
+      width: 108px;
+      height: 34px;
+      margin: 17px auto 0;
+      border-radius: 6px;
+      background: var(--green);
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 57px;
+      background: var(--white);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: center;
+      box-shadow: 0 -2px 10px rgba(52, 89, 32, 0.08);
+      color: var(--nav-blue);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .nav-item {
+      display: grid;
+      place-items: center;
+      gap: 3px;
+    }
+
+    .nav-icon {
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .nav-item.active {
+      color: var(--green);
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="FreshMind clearer expiry entry UI design">
+    <div class="status">
+      <span>9:41</span>
+      <span>FreshMind</span>
+    </div>
+
+    <header class="header">
+      <div class="icon-button">‹</div>
+      <h1>Custom Ingredient Entry</h1>
+      <div></div>
+    </header>
+
+    <section class="content">
+      <div class="categories" aria-label="Ingredient categories">
+        <div class="category selected">
+          <div class="emoji">🥬</div>
+          <div>Vegetables</div>
+        </div>
+        <div class="category">
+          <div class="emoji">🍎</div>
+          <div>Fruits</div>
+        </div>
+        <div class="category">
+          <div class="emoji">🥩</div>
+          <div>Meat</div>
+        </div>
+        <div class="category">
+          <div class="emoji">🥫</div>
+          <div>Others</div>
+        </div>
+      </div>
+
+      <div class="form">
+        <div class="field-label">Name</div>
+        <div class="input">Tomato</div>
+
+        <div class="section-title">How would you like to enter the expiry?</div>
+
+        <div class="method-list">
+          <div class="method active">
+            <div class="method-head">
+              <div class="radio"></div>
+              <div class="method-title">I know the expiry date</div>
+              <div class="badge">Recommended</div>
+            </div>
+            <p class="method-copy">Choose this when the package says “Best before” or “Use by”.</p>
+            <div class="subfields">
+              <div class="input">Expiry date: DD/MM/YYYY</div>
+            </div>
+          </div>
+
+          <div class="method">
+            <div class="method-head">
+              <div class="radio"></div>
+              <div class="method-title">I know the production date and shelf life</div>
+            </div>
+            <p class="method-copy">Choose this when the package shows a made date and “shelf life: 30 days”.</p>
+            <div class="subfields">
+              <div class="subrow">
+                <div class="input">Made on</div>
+                <div class="input">30 days</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result">
+          <span>Final expiry date</span>
+          <span>01/06/2026</span>
+        </div>
+
+        <div class="helper">Tip: both options save the same final expiry date. Pick the one that matches the wording on the package.</div>
+
+        <div class="save">Save</div>
+      </div>
+    </section>
+
+    <nav class="nav" aria-label="Bottom navigation">
+      <div class="nav-item">
+        <div class="nav-icon">⌂</div>
+        <div>Home</div>
+      </div>
+      <div class="nav-item active">
+        <div class="nav-icon">▦</div>
+        <div>Inventory</div>
+      </div>
+      <div class="nav-item">
+        <div class="nav-icon">☰</div>
+        <div>Recipes</div>
+      </div>
+    </nav>
+  </main>
+</body>
+</html>

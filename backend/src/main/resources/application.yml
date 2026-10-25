@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: freshmind-backend
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/freshmind?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        format_sql: false
+  cache:
+    type: redis
+  data:
+    redis:
+      repositories:
+        enabled: false
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2s
+
+server:
+  port: ${SERVER_PORT:8080}
+  shutdown: graceful
+  error:
+    include-message: never
+
+freshmind:
+  time-zone: ${APP_TIME_ZONE:Asia/Shanghai}
+  near-expiry-days: ${NEAR_EXPIRY_DAYS:2}
+  recommendation:
+    minimum-match-rate: ${RECOMMENDATION_MINIMUM_MATCH_RATE:0.60}
+    expiring-ingredient-bonus: ${RECOMMENDATION_EXPIRING_BONUS:0.20}
+  ai:
+    enabled: ${AI_ENABLED:true}
+    base-url: ${AI_BASE_URL:https://dashscope.aliyuncs.com/compatible-mode/v1}
+    api-key: ${DASHSCOPE_API_KEY:}
+    model: ${AI_MODEL:qwen-plus}
+    candidate-count: ${AI_CANDIDATE_COUNT:8}
+    timeout: ${AI_TIMEOUT:PT20S}
+  session-ttl: ${SESSION_TTL:PT2H}
+

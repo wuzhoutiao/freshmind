@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:clipChildren="true"
+    android:clipToPadding="true"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/header_height"
+        android:background="@drawable/bg_app"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingLeft="@dimen/screen_padding"
+        android:paddingTop="@dimen/header_top_padding"
+        android:paddingRight="@dimen/screen_padding">
+
+        <ImageButton
+            android:id="@+id/ingredientDetailBackButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="start|bottom"
+            android:background="@drawable/bg_back_icon_button"
+            android:contentDescription="@string/back"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="8dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_back_arrow" />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipChildren="true"
+        android:clipToPadding="true"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/screen_padding"
+            android:paddingTop="24dp"
+            android:paddingRight="@dimen/screen_padding"
+            android:paddingBottom="@dimen/content_bottom_nav_gap">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_white"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingTop="18dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="18dp">
+
+                <TextView
+                    android:id="@+id/ingredientDetailName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Sweet Corn"
+                    android:textColor="@color/black"
+                    android:textSize="34sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="It expires on"
+                    android:textColor="@color/fresh_text"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/ingredientDetailExpiryDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="May 6th, 2026"
+                    android:textColor="@color/fresh_green_dark"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/ingredientDetailDaysLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_days_left_tag"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:minWidth="132dp"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:text="30 Days Left"
+                    android:textColor="@color/fresh_green_dark"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ingredientEditButton"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_tag_green"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="center"
+                        android:text="@string/edit"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/ingredientDeleteButton"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_tag_red"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="center"
+                        android:text="@string/delete"
+                        android:textColor="@color/fresh_red"
+                        android:textSize="17sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp" android:fontFamily="@font/roboto_bold" android:text="Storage Methods" android:textColor="@color/fresh_blue" android:textSize="18sp" />
+            <TextView android:id="@+id/ingredientStorageMethodsText" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:background="@drawable/bg_card_white" android:elevation="2dp" android:fontFamily="@font/roboto_regular" android:padding="14dp" android:text="Fresh sweet corn can only be stored for 1-2 days at room temperature; it can be kept in the refrigerator for 3-5 days; it can be frozen for half a month to several months." android:textColor="@color/black" android:textSize="14sp" />
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp" android:fontFamily="@font/roboto_bold" android:text="Related Recipes" android:textColor="@color/fresh_blue" android:textSize="18sp" />
+            <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:clipChildren="false" android:clipToPadding="false" android:paddingLeft="2dp" android:paddingRight="32dp" android:scrollbars="none">
+                <LinearLayout android:id="@+id/ingredientRelatedRecipesContainer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <include layout="@layout/item_recipe_card" android:layout_marginRight="14dp" />
+                    <include layout="@layout/item_recipe_card" />
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/partial_bottom_nav" />
+</LinearLayout>
