@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#17356f">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+    <title>FreshMind · 智能食材管理</title>
+    <meta name="description" content="管理食材库存、临期提醒与智能菜谱推荐。">
+    <link rel="icon" href="/assets/freshmind-logo.png">
+    <link rel="stylesheet" href="/css/app.css">
+    <script src="/js/app.js" defer></script>
+</head>
+<body>
+<svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-grid" viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m4 7 8-4 8 4-8 4-8-4Zm0 0v10l8 4 8-4V7M12 11v10"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="m12 3 1.35 4.15L17.5 8.5l-4.15 1.35L12 14l-1.35-4.15L6.5 8.5l4.15-1.35L12 3ZM18.5 14l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2ZM5 14l.7 1.8 1.8.7-1.8.7L5 19l-.7-1.8-1.8-.7 1.8-.7L5 14Z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 8h18c0-1-3-1-3-8ZM10 21h4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 20 4.2-1 10.6-10.6-3.2-3.2L5 15.8 4 20ZM14.5 6.3l3.2 3.2"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 4C11 4 5 8 5 14c0 3 2 5 5 5 6 0 10-6 10-15ZM4 21c3-6 7-9 12-12"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 5H5v14h5M14 8l4 4-4 4M8 12h10"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-5 3.5-7 8-7s7.2 2 8 7"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M18 12a6 6 0 0 0-10.2-4.3L5 10M6 12a6 6 0 0 0 10.2 4.3L19 14"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+</svg>
+
+<noscript><div class="noscript">FreshMind 需要启用 JavaScript 才能使用。</div></noscript>
+
+<section id="authView" class="auth-shell">
+    <div class="auth-visual">
+        <div class="auth-brand">
+            <img src="/assets/freshmind-logo.png" alt="FreshMind Logo" class="auth-logo">
+            <div><strong>FreshMind</strong><span>管理新鲜，减少浪费</span></div>
+        </div>
+        <div class="auth-copy">
+            <span class="eyebrow">SMART PANTRY</span>
+            <h1>让冰箱里的每一种食材，都被好好使用。</h1>
+            <p>记录库存与保质期，优先消耗临期食材，再由 AI 为你生成真正匹配当下库存的菜谱。</p>
+            <div class="auth-features">
+                <div><span class="feature-icon"><svg><use href="#i-box"/></svg></span><span><b>库存清晰</b><small>数量、分类和到期日集中管理</small></span></div>
+                <div><span class="feature-icon"><svg><use href="#i-bell"/></svg></span><span><b>临期可见</b><small>新鲜、临期、过期一目了然</small></span></div>
+                <div><span class="feature-icon"><svg><use href="#i-sparkles"/></svg></span><span><b>智能菜谱</b><small>根据真实库存生成并重新排序</small></span></div>
+            </div>
+        </div>
+        <div class="auth-orb auth-orb-one"></div><div class="auth-orb auth-orb-two"></div>
+    </div>
+
+    <div class="auth-panel">
+        <div class="auth-card">
+            <div class="auth-mobile-brand">
+                <img src="/assets/freshmind-logo.png" alt="" class="mini-logo"><strong>FreshMind</strong>
+            </div>
+            <div class="auth-tabs" role="tablist" aria-label="账户操作">
+                <button id="loginTab" class="auth-tab active" role="tab" aria-selected="true" data-auth-tab="login">登录</button>
+                <button id="registerTab" class="auth-tab" role="tab" aria-selected="false" data-auth-tab="register">注册</button>
+            </div>
+
+            <form id="loginForm" class="auth-form" novalidate>
+                <div class="form-heading"><h2>欢迎回来</h2><p>登录后继续管理你的食材。</p></div>
+                <div class="field"><label for="loginEmail">邮箱</label><input id="loginEmail" name="email" type="email" autocomplete="email" maxlength="320" placeholder="name@example.com" required><span class="field-error" data-error-for="email"></span></div>
+                <div class="field"><label for="loginPassword">密码</label><input id="loginPassword" name="password" type="password" autocomplete="current-password" maxlength="72" placeholder="请输入密码" required><span class="field-error" data-error-for="password"></span></div>
+                <div id="loginError" class="form-alert" hidden></div>
+                <button class="button button-primary button-block" type="submit"><span>登录 FreshMind</span></button>
+            </form>
+
+            <form id="registerForm" class="auth-form" novalidate hidden>
+                <div class="form-heading"><h2>创建账户</h2><p>一分钟开始整理你的新鲜库存。</p></div>
+                <div class="field"><label for="registerName">显示名称</label><input id="registerName" name="displayName" autocomplete="name" maxlength="80" placeholder="怎么称呼你" required><span class="field-error" data-error-for="displayName"></span></div>
+                <div class="field"><label for="registerEmail">邮箱</label><input id="registerEmail" name="email" type="email" autocomplete="email" maxlength="320" placeholder="name@example.com" required><span class="field-error" data-error-for="email"></span></div>
+                <div class="field"><label for="registerPassword">密码</label><input id="registerPassword" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="72" placeholder="至少 8 位" required><span class="field-error" data-error-for="password"></span></div>
+                <div id="registerError" class="form-alert" hidden></div>
+                <button class="button button-primary button-block" type="submit"><span>创建账户</span></button>
+            </form>
+            <p class="auth-footnote">登录即表示你同意仅将本应用用于个人食材管理。</p>
+        </div>
+    </div>
+</section>
+
+<div id="appView" class="app-shell" hidden>
+    <aside class="sidebar">
+        <a href="#dashboard" class="brand" aria-label="FreshMind 首页">
+            <img src="/assets/freshmind-logo.png" alt=""><span><strong>FreshMind</strong><small>Smart Pantry</small></span>
+        </a>
+        <nav class="side-nav" aria-label="主要导航">
+            <button class="nav-item active" data-route="dashboard"><svg><use href="#i-grid"/></svg><span>概览</span></button>
+            <button class="nav-item" data-route="inventory"><svg><use href="#i-box"/></svg><span>库存</span></button>
+            <button class="nav-item" data-route="recipes"><svg><use href="#i-sparkles"/></svg><span>智能菜谱</span></button>
+            <button class="nav-item" data-route="notifications"><svg><use href="#i-bell"/></svg><span>提醒</span><span class="nav-badge" data-unread-badge hidden>0</span></button>
+        </nav>
+        <div class="sidebar-tip"><svg><use href="#i-leaf"/></svg><strong>减少浪费，从今天开始</strong><p>优先使用临期食材，既省钱也更环保。</p></div>
+        <div class="account-card">
+            <span id="userAvatar" class="avatar">F</span>
+            <span class="account-copy"><strong id="sidebarUserName">用户</strong><small id="sidebarUserEmail">—</small></span>
+            <button id="logoutButton" class="icon-button" type="button" aria-label="退出登录"><svg><use href="#i-logout"/></svg></button>
+        </div>
+    </aside>
+
+    <header class="mobile-header">
+        <a href="#dashboard" class="mobile-brand"><img src="/assets/freshmind-logo.png" alt=""><strong>FreshMind</strong></a>
+        <button class="icon-button notification-button" data-route="notifications" aria-label="查看提醒"><svg><use href="#i-bell"/></svg><span class="notification-dot" data-unread-badge hidden>0</span></button>
+    </header>
+
+    <main class="main-content">
+        <header class="page-header">
+            <div><span id="pageEyebrow" class="eyebrow">OVERVIEW</span><h1 id="pageTitle">概览</h1><p id="pageSubtitle">掌握今天的库存状态。</p></div>
+            <div class="header-actions"><span id="todayLabel" class="today-label"></span><button class="icon-button notification-button desktop-bell" data-route="notifications" aria-label="查看提醒"><svg><use href="#i-bell"/></svg><span class="notification-dot" data-unread-badge hidden>0</span></button></div>
+        </header>
+
+        <section id="page-dashboard" class="page active" data-page="dashboard">
+            <div class="welcome-card">
+                <div><span class="welcome-kicker">你好，<span id="welcomeName">朋友</span></span><h2>今天也从新鲜的一餐开始。</h2><p>先看看有哪些食材快到期，再让 FreshMind 帮你组合菜谱。</p><div class="welcome-actions"><button class="button button-dark" data-action="open-add"><svg><use href="#i-plus"/></svg>添加食材</button><button class="button button-soft" data-route="recipes"><svg><use href="#i-sparkles"/></svg>生成菜谱</button></div></div>
+                <div class="welcome-illustration"><img src="/assets/freshmind-logo.png" alt=""></div>
+            </div>
+
+            <div id="dashboardLoading" class="dashboard-loading"><span class="skeleton block"></span><span class="skeleton block"></span><span class="skeleton block"></span><span class="skeleton block"></span></div>
+            <div id="statsGrid" class="stats-grid" hidden>
+                <article class="stat-card stat-total"><div class="stat-icon"><svg><use href="#i-box"/></svg></div><div><span>总库存</span><strong id="statTotal">0</strong><small>条食材记录</small></div></article>
+                <article class="stat-card stat-fresh"><div class="stat-icon"><svg><use href="#i-leaf"/></svg></div><div><span>新鲜</span><strong id="statFresh">0</strong><small>状态良好</small></div></article>
+                <article class="stat-card stat-near"><div class="stat-icon"><svg><use href="#i-clock"/></svg></div><div><span>临期</span><strong id="statNear">0</strong><small>建议优先使用</small></div></article>
+                <article class="stat-card stat-expired"><div class="stat-icon"><svg><use href="#i-bell"/></svg></div><div><span>已过期</span><strong id="statExpired">0</strong><small>请及时处理</small></div></article>
+            </div>
+
+            <div class="dashboard-grid">
+                <article class="panel urgent-panel"><div class="panel-heading"><div><span class="section-kicker">USE FIRST</span><h3>优先处理</h3></div><button class="text-button" data-route="inventory">查看全部 <svg><use href="#i-chevron"/></svg></button></div><div id="urgentList" class="urgent-list"><div class="empty-compact">正在读取库存…</div></div></article>
+                <article class="panel health-panel"><div class="panel-heading"><div><span class="section-kicker">PANTRY HEALTH</span><h3>库存健康度</h3></div></div><div class="health-content"><div id="healthDonut" class="health-donut"><span id="healthPercent">0%</span><small>新鲜率</small></div><div class="health-legend"><div><i class="dot fresh"></i><span>新鲜</span><strong id="legendFresh">0</strong></div><div><i class="dot near"></i><span>临期</span><strong id="legendNear">0</strong></div><div><i class="dot expired"></i><span>过期</span><strong id="legendExpired">0</strong></div></div></div></article>
+                <article class="panel notification-preview"><div class="panel-heading"><div><span class="section-kicker">REMINDERS</span><h3>最近提醒</h3></div><button class="text-button" data-route="notifications">提醒中心 <svg><use href="#i-chevron"/></svg></button></div><div id="dashboardNotifications" class="notification-list compact"><div class="empty-compact">正在读取提醒…</div></div></article>
+            </div>
+        </section>
+
+        <section id="page-inventory" class="page" data-page="inventory" hidden>
+            <div class="toolbar-card">
+                <div class="search-field"><svg><use href="#i-search"/></svg><input id="inventorySearch" type="search" placeholder="搜索食材名称" aria-label="搜索食材"></div>
+                <select id="inventoryCategory" aria-label="按分类筛选"><option value="">全部分类</option><option value="VEGETABLES">蔬菜</option><option value="FRUITS">水果</option><option value="MEAT">肉类</option><option value="OTHERS">其他</option></select>
+                <select id="inventoryStatus" aria-label="按状态筛选"><option value="">全部状态</option><option value="FRESH">新鲜</option><option value="NEAR_EXPIRY">临期</option><option value="EXPIRED">已过期</option></select>
+                <select id="inventorySort" aria-label="排序方式"><option value="expiry:asc">到期日从近到远</option><option value="expiry:desc">到期日从远到近</option><option value="name:asc">名称 A–Z</option><option value="created:desc">最近添加</option><option value="updated:desc">最近更新</option></select>
+                <button class="button button-primary add-inventory-button" data-action="open-add"><svg><use href="#i-plus"/></svg>添加食材</button>
+            </div>
+
+            <div class="inventory-summary"><p id="inventoryCount">共 0 条库存</p><button id="refreshInventory" class="icon-text-button"><svg><use href="#i-refresh"/></svg>刷新</button></div>
+            <div id="inventoryLoading" class="table-loading"><span class="skeleton row"></span><span class="skeleton row"></span><span class="skeleton row"></span></div>
+            <div id="inventoryEmpty" class="empty-state" hidden><div class="empty-icon"><svg><use href="#i-box"/></svg></div><h3>还没有符合条件的食材</h3><p>添加第一条库存，或调整当前筛选条件。</p><button class="button button-primary" data-action="open-add"><svg><use href="#i-plus"/></svg>添加食材</button></div>
+            <div id="inventoryContent" hidden>
+                <div class="table-wrap"><table class="inventory-table"><thead><tr><th>食材</th><th>分类</th><th>数量</th><th>购买日期</th><th>到期日期</th><th>状态</th><th class="actions-column">操作</th></tr></thead><tbody id="inventoryTableBody"></tbody></table></div>
+                <div id="inventoryCardList" class="inventory-card-list"></div>
+                <div class="pagination"><button id="previousPage" class="button button-ghost" type="button">上一页</button><span id="pageIndicator">第 1 / 1 页</span><button id="nextPage" class="button button-ghost" type="button">下一页</button></div>
+            </div>
+        </section>
+
+        <section id="page-recipes" class="page" data-page="recipes" hidden>
+            <div class="recipe-hero">
+                <div><span class="eyebrow">AI RECIPE STUDIO</span><h2>把现有食材，变成今天的一餐。</h2><p>模型负责生成候选，FreshMind 再根据库存命中率和临期食材重新排序。</p><button id="generateRecipes" class="button button-dark"><svg><use href="#i-sparkles"/></svg><span>根据当前库存生成</span></button></div>
+                <div class="recipe-hero-art"><svg><use href="#i-sparkles"/></svg><span>Qwen</span><small>结构化生成 · Java 规则重排</small></div>
+            </div>
+            <div class="privacy-note"><svg><use href="#i-leaf"/></svg><p>仅会发送目录内、未过期且数量大于 0 的食材摘要。真实模型首次生成可能需要几秒，重复请求会优先使用缓存。</p></div>
+            <div id="recipeIdle" class="empty-state recipe-empty"><div class="empty-icon sparkle"><svg><use href="#i-sparkles"/></svg></div><h3>准备好发现新菜谱了吗？</h3><p>建议先添加至少两种目录内食材，然后点击上方按钮。</p></div>
+            <div id="recipeLoading" class="recipe-grid" hidden><article class="recipe-card skeleton-card"></article><article class="recipe-card skeleton-card"></article><article class="recipe-card skeleton-card"></article></div>
+            <div id="recipeEmpty" class="empty-state recipe-empty" hidden><div class="empty-icon"><svg><use href="#i-leaf"/></svg></div><h3>暂时没有合适的菜谱</h3><p>请添加至少两种目录内、未过期的食材后重试。</p></div>
+            <div id="recipeGrid" class="recipe-grid" hidden></div>
+        </section>
+
+        <section id="page-notifications" class="page" data-page="notifications" hidden>
+            <div class="notification-toolbar"><div class="segmented" role="group" aria-label="提醒筛选"><button class="active" data-notification-filter="all">全部</button><button data-notification-filter="unread">未读</button></div><button id="refreshNotifications" class="icon-text-button"><svg><use href="#i-refresh"/></svg>刷新</button></div>
+            <div class="schedule-note"><svg><use href="#i-clock"/></svg><div><strong>每日临期检查</strong><p>系统每天 08:00 扫描临期库存并生成提醒；概览页会实时显示需要优先处理的食材。</p></div></div>
+            <div id="notificationLoading" class="notification-list"><span class="skeleton row"></span><span class="skeleton row"></span></div>
+            <div id="notificationEmpty" class="empty-state" hidden><div class="empty-icon"><svg><use href="#i-bell"/></svg></div><h3>暂时没有提醒</h3><p>库存状态良好，或者每日扫描尚未执行。</p></div>
+            <div id="notificationList" class="notification-list" hidden></div>
+        </section>
+    </main>
+
+    <nav class="mobile-nav" aria-label="移动端导航">
+        <button class="active" data-route="dashboard"><svg><use href="#i-grid"/></svg><span>概览</span></button>
+        <button data-route="inventory"><svg><use href="#i-box"/></svg><span>库存</span></button>
+        <button class="mobile-add" data-action="open-add" aria-label="添加食材"><svg><use href="#i-plus"/></svg></button>
+        <button data-route="recipes"><svg><use href="#i-sparkles"/></svg><span>菜谱</span></button>
+        <button data-route="notifications"><svg><use href="#i-bell"/></svg><span>提醒</span><i class="mobile-badge" data-unread-badge hidden>0</i></button>
+    </nav>
+</div>
+
+<dialog id="inventoryDialog" class="modal">
+    <form id="inventoryForm" class="modal-card" novalidate>
+        <div class="modal-header"><div><span class="section-kicker">PANTRY ITEM</span><h2 id="inventoryDialogTitle">添加食材</h2></div><button class="icon-button" type="button" data-close-dialog aria-label="关闭"><svg><use href="#i-close"/></svg></button></div>
+        <input id="inventoryId" type="hidden">
+        <div class="modal-body form-grid">
+            <div class="field field-wide"><label for="ingredientName">食材名称</label><input id="ingredientName" name="ingredientName" list="ingredientOptions" maxlength="100" placeholder="例如 Tomato" autocomplete="off" required><datalist id="ingredientOptions"></datalist><span class="field-help">选择目录食材可自动带出分类，也可以填写自定义名称。</span><span class="field-error" data-error-for="ingredientName"></span></div>
+            <div class="field"><label for="ingredientCategory">分类</label><select id="ingredientCategory" name="category" required><option value="">请选择</option><option value="VEGETABLES">蔬菜</option><option value="FRUITS">水果</option><option value="MEAT">肉类</option><option value="OTHERS">其他</option></select><span class="field-error" data-error-for="category"></span></div>
+            <div class="field"><label for="ingredientQuantity">数量</label><input id="ingredientQuantity" name="quantity" type="number" min="0.001" max="999999999.999" step="0.001" placeholder="1" required><span class="field-error" data-error-for="quantity"></span></div>
+            <div class="field"><label for="ingredientUnit">单位</label><input id="ingredientUnit" name="unit" maxlength="24" placeholder="pcs / g / bottle" required><span class="field-error" data-error-for="unit"></span></div>
+            <div class="field"><label for="purchasedOn">购买日期</label><input id="purchasedOn" name="purchasedOn" type="date" required><span class="field-error" data-error-for="purchasedOn"></span></div>
+            <div class="field"><label for="expiresOn">到期日期</label><input id="expiresOn" name="expiresOn" type="date"><span id="expiryHelp" class="field-help">新增时可留空，系统将按食材目录估算。</span><span class="field-error" data-error-for="expiresOn"></span></div>
+        </div>
+        <div id="inventoryFormError" class="form-alert modal-alert" hidden></div>
+        <div class="modal-actions"><button class="button button-ghost" type="button" data-close-dialog>取消</button><button id="saveInventory" class="button button-primary" type="submit"><span>保存食材</span></button></div>
+    </form>
+</dialog>
+
+<dialog id="consumeDialog" class="modal small-modal">
+    <form id="consumeForm" class="modal-card" novalidate>
+        <div class="modal-header"><div><span class="section-kicker">USE INGREDIENT</span><h2>消耗库存</h2></div><button class="icon-button" type="button" data-close-dialog aria-label="关闭"><svg><use href="#i-close"/></svg></button></div>
+        <input id="consumeItemId" type="hidden">
+        <div class="modal-body"><p class="consume-copy">正在消耗 <strong id="consumeItemName">食材</strong>，当前库存 <span id="consumeCurrent">0</span>。</p><div class="field"><label for="consumeAmount">消耗数量</label><input id="consumeAmount" name="amount" type="number" min="0.001" step="0.001" required><span class="field-error" data-error-for="amount"></span></div></div>
+        <div id="consumeFormError" class="form-alert modal-alert" hidden></div>
+        <div class="modal-actions"><button class="button button-ghost" type="button" data-close-dialog>取消</button><button class="button button-primary" type="submit"><span>确认消耗</span></button></div>
+    </form>
+</dialog>
+
+<dialog id="confirmDialog" class="modal small-modal">
+    <div class="modal-card confirm-card"><div class="confirm-icon"><svg><use href="#i-trash"/></svg></div><h2 id="confirmTitle">确认操作</h2><p id="confirmMessage">确定要继续吗？</p><div class="modal-actions"><button id="confirmCancel" class="button button-ghost" type="button">取消</button><button id="confirmSubmit" class="button button-danger" type="button">确认删除</button></div></div>
+</dialog>
+
+<dialog id="recipeDialog" class="modal recipe-modal">
+    <article class="modal-card"><div class="modal-header"><div><span class="section-kicker">RECIPE DETAIL</span><h2 id="recipeDialogTitle">菜谱详情</h2></div><button class="icon-button" type="button" data-close-dialog aria-label="关闭"><svg><use href="#i-close"/></svg></button></div><div id="recipeDialogBody" class="modal-body recipe-detail"></div><div class="modal-actions"><button class="button button-primary" type="button" data-close-dialog>完成</button></div></article>
+</dialog>
+
+<div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>

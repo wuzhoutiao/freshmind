@@ -1,6 +1,6 @@
 # FreshMind 智能食材临期与菜谱推荐系统
 
-FreshMind 原本是一个 Android 单机食材管理应用。本仓库在保留客户端原型的基础上，增加了一个适合校招简历展示的单体后端：用户可以管理库存、查看临期食材、接收站内提醒，并让通义千问根据当前库存生成菜谱候选。
+FreshMind 是一个适合校招简历展示的一体化食材管理网站。浏览器页面和 Spring MVC API 由同一个 Spring Boot 进程提供，用户可以注册登录、管理库存、查看临期食材、接收站内提醒，并让通义千问根据当前库存生成菜谱候选。
 
 项目的重点不是堆技术，而是形成一条容易讲清楚的业务链路：
 
@@ -16,6 +16,7 @@ FreshMind 原本是一个 Android 单机食材管理应用。本仓库在保留�
 | --- | --- |
 | Java | Java 17、集合、Stream、JUC |
 | Spring | Spring MVC、IoC、参数校验、事务、定时任务；Spring Boot 负责启动和配置 |
+| Web | 原生 HTML、CSS、JavaScript，响应式页面，同源调用 REST API |
 | 数据库 | MySQL、Spring Data JPA、索引、事务、乐观锁 |
 | Redis | 登录会话、食材目录缓存、AI 菜谱候选缓存 |
 | AI | 通义千问 OpenAI 兼容接口、JSON 结构化输出、超时与降级 |
@@ -26,6 +27,7 @@ FreshMind 原本是一个 Android 单机食材管理应用。本仓库在保留�
 ## 2. 核心功能
 
 - 注册、登录、退出；密码使用 BCrypt 保存。
+- 浏览器端提供概览、库存管理、智能菜谱和提醒中心，不需要安装 Android 模拟器或前端构建工具。
 - 登录 token 存入 Redis，并设置两小时过期时间。
 - 食材库存新增、查询、修改、删除和部分消耗。
 - 根据 30 种食材目录估算保质期，计算新鲜、临期、过期状态。
@@ -39,7 +41,7 @@ FreshMind 原本是一个 Android 单机食材管理应用。本仓库在保留�
 
 ```mermaid
 flowchart LR
-    A[Android / HTTP 客户端] --> B[Spring MVC Controller]
+    A[Browser HTML/CSS/JS] --> B[Spring MVC Controller]
     B --> C[库存与推荐 Service]
     C --> D[(MySQL)]
     B --> E[(Redis 会话)]
@@ -51,19 +53,21 @@ flowchart LR
     K --> D
 ```
 
-后端目录：
+核心目录：
 
 ```text
-backend/src/main/java/com/freshmind/backend/
-├── auth/          注册、登录、退出
-├── session/       Redis 会话与 MVC 拦截器
-├── inventory/     库存、保质期和状态计算
-├── ai/            千问客户端、结构化 DTO、校验与缓存边界
-├── recipe/        推荐打分与接口
-├── notification/ JUC 临期提醒任务
-├── dashboard/     首页汇总（不阻塞等待 AI）
-├── catalog/       食材目录
-└── common/        配置与统一错误响应
+src/main/
+├── resources/static/          浏览器页面、样式与交互脚本
+└── java/com/freshmind/backend/
+    ├── auth/                   注册、登录、退出
+    ├── session/                Redis 会话与 MVC 拦截器
+    ├── inventory/              库存、保质期和状态计算
+    ├── ai/                     千问客户端、结构化 DTO、校验与缓存边界
+    ├── recipe/                 推荐打分与接口
+    ├── notification/           JUC 临期提醒任务
+    ├── dashboard/              首页汇总（不阻塞等待 AI）
+    ├── catalog/                食材目录
+    └── common/                 配置与统一错误响应
 ```
 
 ## 4. 本地运行
@@ -73,10 +77,10 @@ backend/src/main/java/com/freshmind/backend/
 该模式使用 H2、内存会话和确定性菜谱生成器，不要求安装 MySQL、Redis，也不会访问外部模型：
 
 ```powershell
-.\gradlew.bat -p backend bootRun --args="--spring.profiles.active=local"
+.\gradlew.bat bootRun --args="--spring.profiles.active=local"
 ```
 
-服务地址：`http://localhost:8080`。
+启动后打开 `http://localhost:8080`，可以直接在网站完成注册、库存增删改查、部分消耗、菜谱推荐和提醒查看。
 
 ### 4.2 MySQL + Redis + 通义千问
 
@@ -97,7 +101,7 @@ $env:DB_PASSWORD = '你的MySQL密码'
 $env:REDIS_HOST = 'localhost'
 $env:REDIS_PORT = '6379'
 $env:DASHSCOPE_API_KEY = '<your-new-key>'
-.\gradlew.bat -p backend bootRun
+.\gradlew.bat bootRun
 ```
 
 可选 AI 配置：
@@ -135,7 +139,7 @@ $env:DASHSCOPE_API_KEY = '<your-new-key>'
 | `GET /api/v1/notifications` | 查询临期提醒 |
 | `PATCH /api/v1/notifications/{id}/read` | 标记提醒已读 |
 
-可使用 [backend/api-demo.http](backend/api-demo.http) 走一遍核心接口。
+正常使用直接打开网站即可；如需单独调试 REST API，可使用 [api-demo.http](api-demo.http) 走一遍核心接口。
 
 ## 6. 关键设计
 
@@ -172,14 +176,14 @@ $env:DASHSCOPE_API_KEY = '<your-new-key>'
 ## 7. 测试
 
 ```powershell
-.\gradlew.bat -p backend clean test
+.\gradlew.bat clean test
 ```
 
-测试覆盖保质期边界、登录会话、库存 CRUD、用户隔离、推荐重排、模型输出白名单、缓存键、Redis 序列化、密钥脱敏、JUC 提醒幂等和参数错误。普通测试不访问真实模型，也不需要真实密钥。
+测试覆盖网站静态资源、保质期边界、登录会话、库存 CRUD、用户隔离、推荐重排、模型输出白名单、缓存键、Redis 序列化、密钥脱敏、JUC 提醒幂等和参数错误。普通测试不访问真实模型，也不需要真实密钥。
 
 ## 8. 简历表述
 
-> 基于 Spring MVC、MySQL 和 Redis 将 Android 食材管理原型扩展为多用户后端，实现库存 CRUD、临期看板、Redis TTL 会话和用户数据隔离。
+> 基于 Spring MVC、MySQL 和 Redis 构建一体化食材管理网站，由 Spring Boot 同时托管响应式页面与 REST API，实现库存 CRUD、临期看板、Redis TTL 会话和用户数据隔离。
 
 > 接入通义千问结构化输出，根据库存生成菜谱候选；在 Java 侧完成食材白名单校验、命中率重算与临期加分排序，并通过库存指纹缓存、超时和本地降级控制延迟与外部服务异常。
 
@@ -189,7 +193,7 @@ $env:DASHSCOPE_API_KEY = '<your-new-key>'
 
 ## 9. 当前边界
 
-- Android 客户端仍使用原来的本地静态菜谱，尚未接入新 API；本次改造聚焦后端。
+- 页面使用原生 HTML、CSS 和 JavaScript，与 API 同源部署；没有额外的 Node.js 前端工程。
 - 这是“LLM 结构化生成 + 后端规则重排”，没有工具调用、规划循环或长期记忆，因此不称 Agent。
 - 登录方案定位为学习项目的 Redis token 会话，不包装成完整生产级认证系统。
 - 当前是单体服务；只有业务确实需要拆分时，才考虑 Dubbo + ZooKeeper。

@@ -1,0 +1,118 @@
+@baseUrl = http://localhost:8080
+
+# 正常使用请直接打开 {{baseUrl}}。本文件用于单独调试 REST API。
+
+### 1. 注册并保存会话 token
+POST {{baseUrl}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "demo@example.com",
+  "password": "correct-horse-battery-staple",
+  "displayName": "Demo User"
+}
+
+> {% client.global.set("freshmind_token", response.body.token); %}
+
+### 2. 新增一条用于 CRUD 演示的库存，并保存 ID
+POST {{baseUrl}}/api/v1/inventory
+X-Token: {{freshmind_token}}
+Content-Type: application/json
+
+{
+  "ingredientName": "Milk",
+  "category": "OTHERS",
+  "quantity": 2,
+  "unit": "bottle",
+  "purchasedOn": "2026-10-27",
+  "expiresOn": "2026-11-03"
+}
+
+> {% client.global.set("freshmind_item_id", response.body.id); %}
+
+### 3. 为菜谱推荐准备目录内食材
+POST {{baseUrl}}/api/v1/inventory
+X-Token: {{freshmind_token}}
+Content-Type: application/json
+
+{
+  "ingredientName": "Rice",
+  "category": "OTHERS",
+  "quantity": 1,
+  "unit": "bowl",
+  "purchasedOn": "2026-10-27",
+  "expiresOn": "2027-04-01"
+}
+
+###
+POST {{baseUrl}}/api/v1/inventory
+X-Token: {{freshmind_token}}
+Content-Type: application/json
+
+{
+  "ingredientName": "Egg",
+  "category": "OTHERS",
+  "quantity": 6,
+  "unit": "pcs",
+  "purchasedOn": "2026-10-27",
+  "expiresOn": "2026-10-29"
+}
+
+###
+POST {{baseUrl}}/api/v1/inventory
+X-Token: {{freshmind_token}}
+Content-Type: application/json
+
+{
+  "ingredientName": "Tomato",
+  "category": "VEGETABLES",
+  "quantity": 2,
+  "unit": "pcs",
+  "purchasedOn": "2026-10-27",
+  "expiresOn": "2026-10-29"
+}
+
+### 4. 查询库存
+GET {{baseUrl}}/api/v1/inventory?page=0&size=20&sortBy=expiry&direction=asc
+X-Token: {{freshmind_token}}
+
+### 5. 修改并消耗库存
+PATCH {{baseUrl}}/api/v1/inventory/{{freshmind_item_id}}
+X-Token: {{freshmind_token}}
+Content-Type: application/json
+
+{
+  "ingredientName": "Milk",
+  "category": "OTHERS",
+  "quantity": 3,
+  "unit": "bottle",
+  "purchasedOn": "2026-10-27",
+  "expiresOn": "2026-11-03"
+}
+
+###
+POST {{baseUrl}}/api/v1/inventory/{{freshmind_item_id}}/consume
+X-Token: {{freshmind_token}}
+Content-Type: application/json
+
+{
+  "amount": 1
+}
+
+### 6. 首页只返回库存统计，不等待 AI
+GET {{baseUrl}}/api/v1/dashboard
+X-Token: {{freshmind_token}}
+
+### 7. 获取菜谱推荐
+# local profile 返回确定性演示候选；默认 profile 使用 DASHSCOPE_API_KEY 调用千问。
+GET {{baseUrl}}/api/v1/recommendations?limit=8
+X-Token: {{freshmind_token}}
+
+### 8. 查询站内临期提醒
+GET {{baseUrl}}/api/v1/notifications
+X-Token: {{freshmind_token}}
+
+### 9. 退出登录
+POST {{baseUrl}}/api/v1/auth/logout
+X-Token: {{freshmind_token}}
+
