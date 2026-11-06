@@ -2,6 +2,7 @@ package com.freshmind.backend.recipe;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -75,6 +76,7 @@ class RecommendationServiceTest {
 
     @Test
     void modelFailureReturnsControlledFallback() {
+        UUID ownerId = UUID.randomUUID();
         InventoryItem tomato = inventoryItem("tomato", "pcs", "2", LocalDate.of(2026, 1, 20));
         InventoryItem egg = inventoryItem("egg", "pcs", "6", LocalDate.of(2026, 1, 21));
         when(catalog.getAll()).thenReturn(catalogItems());
@@ -83,11 +85,17 @@ class RecommendationServiceTest {
         when(cache.getOrGenerate(any(), any(), any(), any(), any()))
                 .thenThrow(new RecipeGenerationException("not configured"));
 
-        List<RecommendationResponse> results = service.recommend(UUID.randomUUID(), 8);
+        List<RecommendationResponse> results = service.recommend(ownerId, 8);
 
         assertThat(results).hasSize(1);
         assertThat(results.get(0).recipe().name()).isEqualTo("Pantry Quick Stir Fry");
         assertThat(results.get(0).matchRate()).isEqualTo(1.0);
+        verify(cache).getOrGenerate(
+                eq(ownerId),
+                any(),
+                eq("test-model:recipe-v1"),
+                any(),
+                any());
     }
 
     private List<CatalogIngredientResponse> catalogItems() {

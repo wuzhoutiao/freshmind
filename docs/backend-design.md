@@ -82,10 +82,10 @@ score = matchRate + 临期命中数 × 0.20
 候选缓存键：
 
 ```text
-ownerId : inventoryFingerprint : model : promptVersion : catalogFingerprint
+ownerId : inventorySha256Fingerprint : model : promptVersion
 ```
 
-库存指纹按稳定顺序对名称、数量、单位、到期日和临期状态做 SHA-256。接口 `limit` 不进入键，因此同一批候选可裁剪成不同数量而不重复调用模型。Redis TTL 为 15 分钟。
+库存指纹按稳定顺序对名称、数量、单位、到期日和临期状态做 SHA-256。食材目录不再生成指纹；接口 `limit` 也不进入键，因此同一批候选可裁剪成不同数量而不重复调用模型。Redis TTL 为 15 分钟。
 
 模型未配置、超时、HTTP 错误或 Redis 访问异常时，推荐服务使用当前目录食材生成简单降级菜谱；格式错误或全部候选未通过校验时也走同一降级。异常消息和日志不包含 API key。
 

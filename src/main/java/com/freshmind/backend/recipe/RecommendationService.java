@@ -82,7 +82,7 @@ public class RecommendationService {
             generated = generatedRecipeCache.getOrGenerate(
                     ownerId,
                     fingerprint(context.pantry()),
-                    cacheVersion(allowedIngredients),
+                    cacheVersion(),
                     context.pantry(),
                     allowedIngredients);
         } catch (RecipeGenerationException | DataAccessException | Cache.ValueRetrievalException exception) {
@@ -229,8 +229,8 @@ public class RecommendationService {
                         "Cook everything thoroughly in a pan and season to taste.")));
     }
 
-    private String cacheVersion(List<String> allowedIngredients) {
-        return aiProperties.model() + ":" + PROMPT_VERSION + ":" + hashStrings(allowedIngredients);
+    private String cacheVersion() {
+        return aiProperties.model() + ":" + PROMPT_VERSION;
     }
 
     private String fingerprint(List<PantryIngredient> pantry) {
@@ -243,12 +243,6 @@ public class RecommendationService {
             update(digest, Boolean.toString(item.nearExpiry()));
         }
         return HexFormat.of().formatHex(digest.digest());
-    }
-
-    private String hashStrings(List<String> values) {
-        MessageDigest digest = sha256();
-        values.forEach(value -> update(digest, value));
-        return HexFormat.of().formatHex(digest.digest()).substring(0, 16);
     }
 
     private MessageDigest sha256() {
