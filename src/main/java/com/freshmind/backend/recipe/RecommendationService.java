@@ -68,6 +68,10 @@ public class RecommendationService {
     }
 
     public List<RecommendationResponse> recommend(UUID ownerId, int limit) {
+        return recommend(ownerId, limit, false);
+    }
+
+    public List<RecommendationResponse> recommend(UUID ownerId, int limit, boolean refresh) {
         Map<String, String> canonicalNames = canonicalIngredientNames();
         InventoryContext context = inventoryContext(ownerId, canonicalNames);
         if (context.pantry().isEmpty()) {
@@ -79,12 +83,20 @@ public class RecommendationService {
                 .toList();
         List<GeneratedRecipe> generated;
         try {
-            generated = generatedRecipeCache.getOrGenerate(
-                    ownerId,
-                    fingerprint(context.pantry()),
-                    cacheVersion(),
-                    context.pantry(),
-                    allowedIngredients);
+            String inventoryFingerprint = fingerprint(context.pantry());
+            generated = refresh
+                    ? generatedRecipeCache.regenerate(
+                            ownerId,
+                            inventoryFingerprint,
+                            cacheVersion(),
+                            context.pantry(),
+                            allowedIngredients)
+                    : generatedRecipeCache.getOrGenerate(
+                            ownerId,
+                            inventoryFingerprint,
+                            cacheVersion(),
+                            context.pantry(),
+                            allowedIngredients);
         } catch (RecipeGenerationException | DataAccessException | Cache.ValueRetrievalException exception) {
             LOGGER.warn("AI recipe generation is unavailable; using the deterministic fallback.");
             generated = fallbackRecipes(context.pantry());

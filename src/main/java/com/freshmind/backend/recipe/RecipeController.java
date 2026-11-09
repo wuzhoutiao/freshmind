@@ -26,8 +26,9 @@ public class RecipeController {
     @GetMapping("/recommendations")
     public List<RecommendationResponse> recommendations(
             @RequestAttribute(SessionAuthenticationInterceptor.USER_ID_ATTRIBUTE) UUID userId,
-            @RequestParam(defaultValue = "8") @Min(1) @Max(12) int limit) {
-        return recommendations.recommend(userId, limit);
+            @RequestParam(defaultValue = "8") @Min(1) @Max(12) int limit,
+            @RequestParam(defaultValue = "false") boolean refresh) {
+        return recommendations.recommend(userId, limit, refresh);
     }
 }
 

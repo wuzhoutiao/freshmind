@@ -108,6 +108,10 @@ X-Token: {{freshmind_token}}
 GET {{baseUrl}}/api/v1/recommendations?limit=8
 X-Token: {{freshmind_token}}
 
+### 7.1 对当前菜谱不满意，重新生成并更新同一缓存键
+GET {{baseUrl}}/api/v1/recommendations?limit=8&refresh=true
+X-Token: {{freshmind_token}}
+
 ### 8. 查询站内临期提醒
 GET {{baseUrl}}/api/v1/notifications
 X-Token: {{freshmind_token}}

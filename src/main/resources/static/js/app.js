@@ -81,7 +81,7 @@
         $("#refreshInventory").addEventListener("click", loadInventory);
         $("#previousPage").addEventListener("click", () => changeInventoryPage(-1));
         $("#nextPage").addEventListener("click", () => changeInventoryPage(1));
-        $("#generateRecipes").addEventListener("click", loadRecommendations);
+        $("#generateRecipes").addEventListener("click", () => loadRecommendations());
         $("#refreshNotifications").addEventListener("click", () => loadNotifications(false));
 
         $("#confirmCancel").addEventListener("click", () => resolveConfirmation(false));
@@ -536,20 +536,28 @@
 
     async function loadRecommendations() {
         const button = $("#generateRecipes");
+        const refresh = state.recommendations !== null;
         setBusy(button, true, "正在生成…");
         $("#recipeIdle").hidden = true;
         $("#recipeEmpty").hidden = true;
         $("#recipeGrid").hidden = true;
         $("#recipeLoading").hidden = false;
         try {
-            state.recommendations = await api("/api/v1/recommendations?limit=8");
+            state.recommendations = await api(`/api/v1/recommendations?limit=8&refresh=${refresh}`);
             renderRecommendations();
         } catch (error) {
-            $("#recipeIdle").hidden = false;
+            if (state.recommendations !== null) {
+                renderRecommendations();
+            } else {
+                $("#recipeIdle").hidden = false;
+            }
             if (error.status !== 401) toast(errorMessage(error), "error");
         } finally {
             $("#recipeLoading").hidden = true;
             setBusy(button, false);
+            if (state.recommendations !== null) {
+                $("#generateRecipes span").textContent = "不满意？重新生成";
+            }
         }
     }
 

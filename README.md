@@ -134,7 +134,7 @@ $env:DASHSCOPE_API_KEY = '<your-new-key>'
 | `PATCH /api/v1/inventory/{id}` | 修改库存 |
 | `POST /api/v1/inventory/{id}/consume` | 消耗库存 |
 | `DELETE /api/v1/inventory/{id}` | 删除库存 |
-| `GET /api/v1/recommendations?limit=8` | 生成并排序菜谱推荐 |
+| `GET /api/v1/recommendations?limit=8&refresh=false` | 生成并排序菜谱推荐；`refresh=true` 强制重新生成并更新缓存 |
 | `GET /api/v1/dashboard` | 首页库存统计，不同步调用模型 |
 | `GET /api/v1/notifications` | 查询临期提醒 |
 | `PATCH /api/v1/notifications/{id}/read` | 标记提醒已读 |

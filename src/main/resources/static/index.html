@@ -161,7 +161,7 @@
                 <div><span class="eyebrow">AI RECIPE STUDIO</span><h2>把现有食材，变成今天的一餐。</h2><p>模型负责生成候选，FreshMind 再根据库存命中率和临期食材重新排序。</p><button id="generateRecipes" class="button button-dark"><svg><use href="#i-sparkles"/></svg><span>根据当前库存生成</span></button></div>
                 <div class="recipe-hero-art"><svg><use href="#i-sparkles"/></svg><span>Qwen</span><small>结构化生成 · Java 规则重排</small></div>
             </div>
-            <div class="privacy-note"><svg><use href="#i-leaf"/></svg><p>仅会发送目录内、未过期且数量大于 0 的食材摘要。真实模型首次生成可能需要几秒，重复请求会优先使用缓存。</p></div>
+            <div class="privacy-note"><svg><use href="#i-leaf"/></svg><p>仅会发送目录内、未过期且数量大于 0 的食材摘要。首次请求可复用缓存；如果结果不满意，再次点击会调用模型重新生成并更新缓存。</p></div>
             <div id="recipeIdle" class="empty-state recipe-empty"><div class="empty-icon sparkle"><svg><use href="#i-sparkles"/></svg></div><h3>准备好发现新菜谱了吗？</h3><p>建议先添加至少两种目录内食材，然后点击上方按钮。</p></div>
             <div id="recipeLoading" class="recipe-grid" hidden><article class="recipe-card skeleton-card"></article><article class="recipe-card skeleton-card"></article><article class="recipe-card skeleton-card"></article></div>
             <div id="recipeEmpty" class="empty-state recipe-empty" hidden><div class="empty-icon"><svg><use href="#i-leaf"/></svg></div><h3>暂时没有合适的菜谱</h3><p>请添加至少两种目录内、未过期的食材后重试。</p></div>

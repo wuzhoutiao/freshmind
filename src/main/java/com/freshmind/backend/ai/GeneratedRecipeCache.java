@@ -3,6 +3,7 @@ package com.freshmind.backend.ai;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,25 @@ public class GeneratedRecipeCache {
             UUID ownerId,
             String inventoryFingerprint,
             String modelAndPromptVersion,
+            List<PantryIngredient> pantry,
+            List<String> allowedIngredients) {
+        return generate(pantry, allowedIngredients);
+    }
+
+    @CachePut(
+            cacheNames = "aiRecipeCandidates",
+            key = "#p0.toString() + ':' + #p1 + ':' + #p2",
+            unless = "#result == null || #result.isEmpty()")
+    public List<GeneratedRecipe> regenerate(
+            UUID ownerId,
+            String inventoryFingerprint,
+            String modelAndPromptVersion,
+            List<PantryIngredient> pantry,
+            List<String> allowedIngredients) {
+        return generate(pantry, allowedIngredients);
+    }
+
+    private List<GeneratedRecipe> generate(
             List<PantryIngredient> pantry,
             List<String> allowedIngredients) {
         List<GeneratedRecipe> generated = client.generate(pantry, allowedIngredients);

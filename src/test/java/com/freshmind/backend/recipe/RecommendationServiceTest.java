@@ -98,6 +98,28 @@ class RecommendationServiceTest {
                 any());
     }
 
+    @Test
+    void refreshRegeneratesCandidatesInsteadOfReadingCache() {
+        UUID ownerId = UUID.randomUUID();
+        InventoryItem tomato = inventoryItem("tomato", "pcs", "2", LocalDate.of(2026, 1, 20));
+        InventoryItem egg = inventoryItem("egg", "pcs", "6", LocalDate.of(2026, 1, 21));
+        when(catalog.getAll()).thenReturn(catalogItems());
+        when(inventory.findAllForRecommendation(ownerId)).thenReturn(List.of(tomato, egg));
+        when(statusCalculator.status(any(LocalDate.class))).thenReturn(InventoryStatus.FRESH);
+        when(cache.regenerate(any(), any(), any(), any(), any()))
+                .thenThrow(new RecipeGenerationException("not configured"));
+
+        service.recommend(ownerId, 8, true);
+
+        verify(cache).regenerate(
+                eq(ownerId),
+                any(),
+                eq("test-model:recipe-v1"),
+                any(),
+                any());
+        verify(cache, never()).getOrGenerate(any(), any(), any(), any(), any());
+    }
+
     private List<CatalogIngredientResponse> catalogItems() {
         return List.of(
                 new CatalogIngredientResponse(1, "Tomato", IngredientCategory.VEGETABLES, 7),

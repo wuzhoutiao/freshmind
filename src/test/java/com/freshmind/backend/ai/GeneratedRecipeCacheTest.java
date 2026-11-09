@@ -36,6 +36,27 @@ class GeneratedRecipeCacheTest {
         }
     }
 
+    @Test
+    void explicitRegenerationCallsModelAndReplacesCachedCandidates() {
+        try (AnnotationConfigApplicationContext context =
+                     new AnnotationConfigApplicationContext(CacheTestConfig.class)) {
+            GeneratedRecipeCache cache = context.getBean(GeneratedRecipeCache.class);
+            CountingClient client = context.getBean(CountingClient.class);
+            UUID ownerId = UUID.randomUUID();
+            List<PantryIngredient> pantry = List.of(new PantryIngredient(
+                    "Tomato", BigDecimal.ONE, "pc", LocalDate.of(2026, 1, 20), false));
+            List<String> allowed = List.of("Tomato", "Egg");
+
+            cache.getOrGenerate(ownerId, "fingerprint", "model:v1", pantry, allowed);
+            cache.regenerate(ownerId, "fingerprint", "model:v1", pantry, allowed);
+            List<GeneratedRecipe> cachedAfterRefresh =
+                    cache.getOrGenerate(ownerId, "fingerprint", "model:v1", pantry, allowed);
+
+            assertThat(client.calls()).isEqualTo(2);
+            assertThat(cachedAfterRefresh.get(0).name()).isEqualTo("Tomato Egg 2");
+        }
+    }
+
     @Configuration
     @EnableCaching
     static class CacheTestConfig {
@@ -64,9 +85,9 @@ class GeneratedRecipeCacheTest {
         public List<GeneratedRecipe> generate(
                 List<PantryIngredient> pantry,
                 List<String> allowedIngredients) {
-            calls.incrementAndGet();
+            int invocation = calls.incrementAndGet();
             return List.of(new GeneratedRecipe(
-                    "Tomato Egg",
+                    "Tomato Egg " + invocation,
                     "Test recipe.",
                     10,
                     List.of(
